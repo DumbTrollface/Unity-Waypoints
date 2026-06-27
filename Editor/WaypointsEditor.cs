@@ -30,7 +30,8 @@ namespace DumbTrollface.Waypoints
                 Vector3 worldPos = waypoints.transform.TransformPoint(pointProp.vector3Value);
 
                 // Create a label to make it easier to see which point is which
-                Handles.Label(worldPos, $"P{i}");
+                float offset = HandleUtility.GetHandleSize(worldPos) * 0.2f;
+                Handles.Label(worldPos + Vector3.up * offset + Vector3.right * offset, $"P{i}");
 
                 EditorGUI.BeginChangeCheck();
                 // Create a handle that can move an individual waypoint in the scene view
