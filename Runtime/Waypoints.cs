@@ -23,6 +23,10 @@ namespace DumbTrollface.Waypoints
             new Vector3(-2f, 0f,  2f)
         };
 
+        public IReadOnlyList<Vector3> WaypointsList => waypoints;
+        public int Count => waypoints.Count;
+        public bool Closed => closed;
+
         private void OnDrawGizmos()
         {
             // Skip if there is nothing to visualize
