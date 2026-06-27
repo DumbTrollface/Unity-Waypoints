@@ -46,5 +46,35 @@ namespace DumbTrollface.Waypoints
                 }
             }
         }
+
+        [DrawGizmo(GizmoType.Selected | GizmoType.NonSelected | GizmoType.Pickable)]
+        private static void DrawGizmos(Waypoints waypoints, GizmoType type)
+        {
+            // Skip if there is nothing to visualize
+            if (waypoints == null || waypoints.Count == 0)
+                return;
+
+            // Setting the color of the gizmos
+            Gizmos.color = Color.yellow;
+
+            // Draw spheres for the waypoints
+            for (int i = 0; i < waypoints.Count; i++)
+            {
+                // Transform local to world space
+                Vector3 p = waypoints.transform.TransformPoint(waypoints.WaypointsList[i]);
+                Gizmos.DrawSphere(p, 0.15f);
+            }
+
+            // Connect waypoints with lines
+            int segmentCount = waypoints.Closed ? waypoints.Count : waypoints.Count - 1;
+            for (int i = 0; i < segmentCount; i++)
+            {
+                // Draw a line from this waypoint to the next
+                int next = (i + 1) % waypoints.Count;
+                Vector3 a = waypoints.transform.TransformPoint(waypoints.WaypointsList[i]);
+                Vector3 b = waypoints.transform.TransformPoint(waypoints.WaypointsList[next]);
+                Gizmos.DrawLine(a, b);
+            }
+        }
     }
 }
