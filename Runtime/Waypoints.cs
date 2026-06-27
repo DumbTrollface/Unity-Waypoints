@@ -15,7 +15,7 @@ namespace DumbTrollface.Waypoints
         /// List of all waypoints filled with some initial waypoints.
         /// </summary>
         [SerializeField]
-        private List<Vector3> waypoints = new List<Vector3>
+        private List<Vector3> waypoints = new()
         {
             new Vector3(-2f, 0f, -2f),
             new Vector3( 2f, 0f, -2f),

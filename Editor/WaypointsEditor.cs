@@ -1,4 +1,3 @@
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,6 +6,9 @@ namespace DumbTrollface.Waypoints
     [CustomEditor(typeof(Waypoints))]
     public class WaypointsEditor : Editor
     {
+        /// <summary>
+        /// The property that holds the waypoint list
+        /// </summary>
         private SerializedProperty waypointsProp;
 
         private void OnEnable()
