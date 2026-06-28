@@ -26,6 +26,8 @@ namespace DumbTrollface.Waypoints
         public IReadOnlyList<Vector3> WaypointsList => waypoints;
         public int Count => waypoints.Count;
         public bool Closed => closed;
+        public Vector3 GetLocalPoint(int index) => waypoints[index];
+        public Vector3 GetWorldPoint(int index) => transform.TransformPoint(waypoints[index]);
     }
 
 }
