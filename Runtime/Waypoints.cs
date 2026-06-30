@@ -8,7 +8,8 @@ namespace DumbTrollface.Waypoints
         /// <summary>
         /// Determines if the path is displayed as closed (line from the last to first waypoint) or open.
         /// </summary>
-        [SerializeField][Tooltip("Should the path is displayed as closed (line from the last to first waypoint) or open")]
+        [SerializeField]
+        [Tooltip("Should the path is displayed as closed (line from the last to first waypoint) or open.")]
         private bool closed = false;
 
         /// <summary>
@@ -26,6 +27,8 @@ namespace DumbTrollface.Waypoints
         public IReadOnlyList<Vector3> WaypointsList => waypoints;
         public int Count => waypoints.Count;
         public bool Closed => closed;
+        public Vector3 GetLocalPoint(int index) => waypoints[index];
+        public Vector3 GetWorldPoint(int index) => transform.TransformPoint(waypoints[index]);
     }
 
 }

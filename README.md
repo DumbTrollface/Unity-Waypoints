@@ -2,7 +2,6 @@
 ![preview](images~/waypoints.png)
 
 This package contains easy to use tools designed for quick in-editor management of waypoints and travel.  
-(Travel has not been added yet).
 
 ## Installation
 You can install this package via the Package Manager.  

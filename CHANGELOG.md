@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.0] - 2026-06-30
+
+### Added
+- basic Traveler
+
+## [1.0.1] - 2026-06-27
+
+### Added
+- Changelog
+
 ## [1.0.0] - 2026-06-27
 
 Initial Release
@@ -10,8 +20,3 @@ Initial Release
     - the points and their connections are visualized with gizmos
 - Custom editor
         each point can be moved individually from the scene view
-
-## [1.0.1] - 2026-06-27
-
-### Added
-- Changelog
