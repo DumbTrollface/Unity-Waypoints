@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.0] - 2026-06-30
+
+### Added
+- basic Traveler
+
 ## [1.0.1] - 2026-06-27
 
 ### Added

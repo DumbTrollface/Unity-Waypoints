@@ -1,6 +1,6 @@
 {
     "name": "com.dumbtrollface.waypoints",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "displayName": "Waypoints",
     "description": "This package contains easy to use tools designed for quick in-editor management of waypoints and travel.",
     "unity": "6000.3",
