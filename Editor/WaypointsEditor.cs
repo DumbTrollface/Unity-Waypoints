@@ -24,12 +24,23 @@ namespace DumbTrollface.Waypoints
             closedProp = serializedObject.FindProperty("closed");
 
             waypointList = new ReorderableList(serializedObject, waypointsProp, true, true, true, true);
+            waypointList.multiSelect = false;
             waypointList.drawHeaderCallback = rect =>
             {
                 EditorGUI.LabelField(rect, "Waypoints");
             };
             waypointList.drawElementCallback = DrawWaypointListElement;
-            waypointList.onAddCallback = list => { AddWaypointAt(waypointsProp.arraySize); };
+            waypointList.onAddCallback = list =>
+            {
+                if (waypointList.selectedIndices.Count == 1)
+                {
+                    AddWaypointAt(waypointList.selectedIndices[0] + 1);
+                }
+                else
+                {
+                    Debug.LogWarning("No waypoint selected");
+                }
+            };
         }
 
         private void OnSceneGUI()
@@ -145,6 +156,8 @@ namespace DumbTrollface.Waypoints
             inserted.vector3Value = newPosition;
 
             serializedObject.ApplyModifiedProperties();
+
+            waypointList.Select(index);
         }
 
         [DrawGizmo(GizmoType.Selected | GizmoType.NonSelected | GizmoType.Pickable)]
