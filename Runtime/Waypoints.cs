@@ -8,7 +8,8 @@ namespace DumbTrollface.Waypoints
         /// <summary>
         /// Determines if the path is displayed as closed (line from the last to first waypoint) or open.
         /// </summary>
-        [SerializeField][Tooltip("Should the path is displayed as closed (line from the last to first waypoint) or open")]
+        [SerializeField]
+        [Tooltip("Should the path is displayed as closed (line from the last to first waypoint) or open.")]
         private bool closed = false;
 
         /// <summary>
