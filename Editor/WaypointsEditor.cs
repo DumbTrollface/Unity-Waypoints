@@ -88,6 +88,25 @@ namespace DumbTrollface.Waypoints
 
             waypointList.DoLayoutList();
 
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Deselect"))
+            {
+                waypointList.ClearSelection();
+            }
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Insert Front"))
+            {
+                AddWaypointAt(0);
+            }
+            if (GUILayout.Button("Insert Back"))
+            {
+                AddWaypointAt(waypointList.count);
+            }
+
+            GUILayout.EndHorizontal();
+
+
             serializedObject.ApplyModifiedProperties();
         }
 
