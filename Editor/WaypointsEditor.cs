@@ -34,13 +34,14 @@ namespace DumbTrollface.Waypoints
             waypointList.drawElementCallback = DrawWaypointListElement;
             waypointList.onAddCallback = list =>
             {
-                if (waypointList.selectedIndices.Count == 1)
+                int selected = GetSelectedIndex();
+                if (selected == -1)
                 {
-                    AddWaypointAt(waypointList.selectedIndices[0] + 1);
+                    AddWaypointAt(0);
                 }
                 else
                 {
-                    Debug.LogWarning("No waypoint selected");
+                    AddWaypointAt(selected + 1);
                 }
             };
             waypointList.onSelectCallback = list => { SceneView.RepaintAll(); };
