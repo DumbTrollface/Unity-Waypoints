@@ -68,7 +68,7 @@ namespace DumbTrollface.Waypoints
 
                 EditorGUI.BeginChangeCheck();
                 // Create a handle that can move an individual waypoint in the scene view
-                Vector3 newPos = Handles.PositionHandle(worldPos, Quaternion.identity);
+                Vector3 newPos = Handles.PositionHandle(worldPos, Tools.pivotRotation == PivotRotation.Local ? wp.transform.rotation : Quaternion.identity);
 
                 // If the handle has been manipulated, we write the new value back to the property and apply the changes to the object
                 if (EditorGUI.EndChangeCheck())
