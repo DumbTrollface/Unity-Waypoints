@@ -17,6 +17,8 @@ namespace DumbTrollface.Waypoints
 
         private Waypoints wp;
 
+        private bool showOnlySelected = false;
+
         private void OnEnable()
         {
             wp = target as Waypoints;
@@ -41,16 +43,20 @@ namespace DumbTrollface.Waypoints
                     Debug.LogWarning("No waypoint selected");
                 }
             };
+            waypointList.onSelectCallback = list => { SceneView.RepaintAll(); };
         }
 
         private void OnSceneGUI()
         {
             serializedObject.Update();
             int count = waypointsProp.arraySize;
+            int selected = GetSelectedIndex();
 
             // Iterate over all waypoints
             for (int i = 0; i < count; i++)
             {
+                if (showOnlySelected && i != selected) continue;
+
                 // Read the property and convert the position from local to world space
                 SerializedProperty pointProp = waypointsProp.GetArrayElementAtIndex(i);
                 Vector3 worldPos = wp.transform.TransformPoint(pointProp.vector3Value);
@@ -86,6 +92,16 @@ namespace DumbTrollface.Waypoints
 
             EditorGUILayout.Space();
 
+            EditorGUILayout.LabelField("Display Settings", EditorStyles.boldLabel);
+            EditorGUI.BeginChangeCheck();
+            showOnlySelected = EditorGUILayout.Toggle("show only selected", showOnlySelected);
+            if (EditorGUI.EndChangeCheck())
+            {
+                SceneView.RepaintAll();
+            }
+
+            EditorGUILayout.Space();
+
             waypointList.DoLayoutList();
 
             EditorGUILayout.Space();
@@ -93,6 +109,7 @@ namespace DumbTrollface.Waypoints
             if (GUILayout.Button("Deselect"))
             {
                 waypointList.ClearSelection();
+                SceneView.RepaintAll();
             }
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Insert Front"))
@@ -177,6 +194,11 @@ namespace DumbTrollface.Waypoints
             serializedObject.ApplyModifiedProperties();
 
             waypointList.Select(index);
+        }
+
+        private int GetSelectedIndex()
+        {
+            return waypointList.selectedIndices.Count == 1 ? waypointList.selectedIndices[0] : -1;
         }
 
         [DrawGizmo(GizmoType.Selected | GizmoType.NonSelected | GizmoType.Pickable)]
