@@ -24,7 +24,7 @@ namespace DumbTrollface.Waypoints
         private float moveSpeed = 2.0f;
 
         [SerializeField]
-        [Tooltip("Determies the radius for when a waypoint is considered as reached.")]
+        [Tooltip("Determines the radius for when a waypoint is considered as reached.")]
         private float waypointRadius = 0.5f;
 
         void Update()
