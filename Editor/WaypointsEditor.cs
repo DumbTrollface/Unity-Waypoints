@@ -11,40 +11,57 @@ namespace DumbTrollface.Waypoints
         /// The property that holds the waypoint list
         /// </summary>
         private SerializedProperty waypointsProp;
+
+        /// <summary>
+        /// The property that holds the closed bool
+        /// </summary>
         private SerializedProperty closedProp;
 
+        /// <summary>
+        /// The list that is displayed in the inspector
+        /// </summary>
         private ReorderableList waypointList;
 
+        /// <summary>
+        /// The object that this editor is displaying and modifying
+        /// </summary>
         private Waypoints wp;
 
+        /// <summary>
+        /// Should only the handles of the currently selected waypoint be shown?
+        /// </summary>
         private bool showOnlySelected = false;
 
         private void OnEnable()
         {
+            // Initialize all objects and properties
             wp = target as Waypoints;
             waypointsProp = serializedObject.FindProperty("waypoints");
             closedProp = serializedObject.FindProperty("closed");
 
-            waypointList = new ReorderableList(serializedObject, waypointsProp, true, true, true, true);
-            waypointList.multiSelect = false;
-            waypointList.drawHeaderCallback = rect =>
+            // Create a reorderable list that shows the waypoints
+            waypointList = new ReorderableList(serializedObject, waypointsProp, true, true, true, true)
             {
-                EditorGUI.LabelField(rect, "Waypoints");
+                multiSelect = false,
+                drawHeaderCallback = rect =>
+                    {
+                        EditorGUI.LabelField(rect, "Waypoints");
+                    },
+                drawElementCallback = DrawWaypointListElement,
+                onAddCallback = list =>
+                    {
+                        int selected = GetSelectedIndex();
+                        if (selected == -1)
+                        {
+                            AddWaypointAt(0);
+                        }
+                        else
+                        {
+                            AddWaypointAt(selected + 1);
+                        }
+                    },
+                onSelectCallback = list => { SceneView.RepaintAll(); }
             };
-            waypointList.drawElementCallback = DrawWaypointListElement;
-            waypointList.onAddCallback = list =>
-            {
-                int selected = GetSelectedIndex();
-                if (selected == -1)
-                {
-                    AddWaypointAt(0);
-                }
-                else
-                {
-                    AddWaypointAt(selected + 1);
-                }
-            };
-            waypointList.onSelectCallback = list => { SceneView.RepaintAll(); };
         }
 
         private void OnSceneGUI()
@@ -124,10 +141,16 @@ namespace DumbTrollface.Waypoints
 
             GUILayout.EndHorizontal();
 
-
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// Draws a single element in the waypoint list inspector
+        /// </summary>
+        /// <param name="rect">the rectangle in which the element is rendered</param>
+        /// <param name="index">index of the list element being rendered</param>
+        /// <param name="isActive">true if the user has clicked on this element</param>
+        /// <param name="isFocused">true if the inspector window currently has active mouse/keyboard focus</param>
         private void DrawWaypointListElement(Rect rect, int index, bool isActive, bool isFocused)
         {
             SerializedProperty element = waypointsProp.GetArrayElementAtIndex(index);
@@ -135,13 +158,13 @@ namespace DumbTrollface.Waypoints
             const float labelWidth = 70f;
             const float spacing = 4f;
 
-            Rect labelRect = new Rect(
+            Rect labelRect = new(
                 rect.x,
                 rect.y,
                 labelWidth,
                 rect.height);
 
-            Rect fieldRect = new Rect(
+            Rect fieldRect = new(
                 labelRect.xMax + spacing,
                 rect.y,
                 rect.width - labelWidth - 2f * spacing,
@@ -151,6 +174,10 @@ namespace DumbTrollface.Waypoints
             EditorGUI.PropertyField(fieldRect, element, GUIContent.none);
         }
 
+        /// <summary>
+        /// Inserts a waypoint at the specified index into the list.
+        /// </summary>
+        /// <param name="index">index of the new element</param>
         private void AddWaypointAt(int index)
         {
             serializedObject.Update();
