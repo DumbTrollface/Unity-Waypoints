@@ -14,6 +14,7 @@
         - if the new point is inserted between existing points it will be placed halfway between them
         - if the new point is inserted at the end the direction and distance of the two previous points will be maintained
 - new option to only show the handle of the selected point
+- the handles now respect the editors tool handle rotation (local or global)
 
 ## [1.1.0] - 2026-06-30
 
