@@ -27,8 +27,19 @@ namespace DumbTrollface.Waypoints
         [Tooltip("Determines the radius for when a waypoint is considered as reached.")]
         private float _waypointRadius = 0.5f;
 
+        [SerializeField]
+        [Tooltip("Turning speed of the traveler to face the next waypoint.")]
+        private float _turnSpeedDegrees = 180.0f;
+
+        [SerializeField]
+        [Tooltip("Threshold for determining when to start walking when turning")]
+        private float _facingThresholdDegrees = 3.0f;
+
         void Update()
         {
+            if (_waypoints == null || _waypoints.Count == 0)
+                return;
+
             Vector3 target = _waypoints.GetWorldPoint(_currentWaypointIndex);
             Vector3 toTarget = target - transform.position;
 
@@ -38,7 +49,19 @@ namespace DumbTrollface.Waypoints
                 return;
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, target, _moveSpeed * Time.deltaTime);
+            Quaternion targetRotation = Quaternion.LookRotation(toTarget.normalized, Vector3.up);
+
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                _turnSpeedDegrees * Time.deltaTime);
+
+            float angle = Quaternion.Angle(transform.rotation, targetRotation);
+
+            if (angle <= _facingThresholdDegrees)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target, _moveSpeed * Time.deltaTime);
+            }
         }
 
         /// <summary>
