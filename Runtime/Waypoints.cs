@@ -13,26 +13,26 @@ namespace DumbTrollface.Waypoints
         private bool _closed = false;
 
         /// <summary>
-        /// List of all waypoints filled with some initial waypoints.
+        /// Array of all waypoints filled with some initial waypoints.
         /// </summary>
         [SerializeField]
-        private List<Vector3> _waypoints = new()
+        private Vector3[] _waypoints = 
         {
-            new Vector3(-2f, 0f, -2f),
-            new Vector3( 2f, 0f, -2f),
-            new Vector3( 2f, 0f,  2f),
-            new Vector3(-2f, 0f,  2f)
+            new(-2f, 0f, -2f),
+            new( 2f, 0f, -2f),
+            new( 2f, 0f,  2f),
+            new(-2f, 0f,  2f)
         };
 
         /// <summary>
-        /// Return a readonly List of the waypoints.
+        /// Returns a copy of the waypoints.
         /// </summary>
-        public IReadOnlyList<Vector3> WaypointsList => _waypoints;
+        public Vector3[] WaypointsCopy => (Vector3[])_waypoints.Clone();
 
         /// <summary>
         /// Returns the number of waypoints in this path
         /// </summary>
-        public int Count => _waypoints.Count;
+        public int Count => _waypoints.Length;
 
         /// <summary>
         /// Returns the state of the closed setting

@@ -239,22 +239,24 @@ namespace DumbTrollface.Waypoints
             // Setting the color of the gizmos
             Gizmos.color = Color.yellow;
 
+            Vector3[] points = waypoints.WaypointsCopy;
+
             // Draw spheres for the waypoints
-            for (int i = 0; i < waypoints.Count; i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 // Transform local to world space
-                Vector3 p = waypoints.transform.TransformPoint(waypoints.WaypointsList[i]);
+                Vector3 p = waypoints.transform.TransformPoint(points[i]);
                 Gizmos.DrawSphere(p, 0.15f);
             }
 
             // Connect waypoints with lines
-            int segmentCount = waypoints.Closed ? waypoints.Count : waypoints.Count - 1;
+            int segmentCount = waypoints.Closed ? points.Length : points.Length - 1;
             for (int i = 0; i < segmentCount; i++)
             {
                 // Draw a line from this waypoint to the next
-                int next = (i + 1) % waypoints.Count;
-                Vector3 a = waypoints.transform.TransformPoint(waypoints.WaypointsList[i]);
-                Vector3 b = waypoints.transform.TransformPoint(waypoints.WaypointsList[next]);
+                int next = (i + 1) % points.Length;
+                Vector3 a = waypoints.transform.TransformPoint(points[i]);
+                Vector3 b = waypoints.transform.TransformPoint(points[next]);
                 Gizmos.DrawLine(a, b);
             }
         }
