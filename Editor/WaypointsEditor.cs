@@ -81,7 +81,10 @@ namespace DumbTrollface.Waypoints
 
                 // Create a label to make it easier to see which point is which
                 float offset = handleSize * 0.2f;
-                Handles.Label(worldPos + Vector3.up * offset + Vector3.right * offset, $"P{i}");
+                GUIStyle labelStyle = GUI.skin.label;
+                labelStyle.normal.textColor = Color.black;
+                labelStyle.fontSize = 15;
+                Handles.Label(worldPos + Vector3.up * offset + Vector3.right * offset, $"P{i}", labelStyle);
 
                 // Create a button handle to change the selected point in the scene view
                 if (Handles.Button(
