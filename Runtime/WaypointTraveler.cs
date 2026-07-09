@@ -60,7 +60,10 @@ namespace DumbTrollface.Waypoints
 
             if (angle <= _facingThresholdDegrees)
             {
-                transform.position = Vector3.MoveTowards(transform.position, target, _moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(
+                    transform.position,
+                    target,
+                    _moveSpeed * Time.deltaTime);
             }
         }
 

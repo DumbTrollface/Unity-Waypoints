@@ -85,9 +85,13 @@ namespace DumbTrollface.Waypoints
 
                 EditorGUI.BeginChangeCheck();
                 // Create a handle that can move an individual waypoint in the scene view
-                Vector3 newPos = Handles.PositionHandle(worldPos, Tools.pivotRotation == PivotRotation.Local ? _wp.transform.rotation : Quaternion.identity);
+                Vector3 newPos = Handles.PositionHandle(
+                    worldPos,
+                    Tools.pivotRotation == PivotRotation.Local
+                        ? _wp.transform.rotation : Quaternion.identity);
 
-                // If the handle has been manipulated, we write the new value back to the property and apply the changes to the object
+                /* If the handle has been manipulated, we write the new value back to the property
+                 * and apply the changes to the object */
                 if (EditorGUI.EndChangeCheck())
                 {
                     Vector3 newLocal = _wp.transform.InverseTransformPoint(newPos);
@@ -101,7 +105,11 @@ namespace DumbTrollface.Waypoints
         public override void OnInspectorGUI()
         {
             using (new EditorGUI.DisabledScope(true))
-                EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
+                EditorGUILayout.ObjectField(
+                    "Script",
+                    MonoScript.FromMonoBehaviour((MonoBehaviour)target),
+                    GetType(),
+                    false);
 
             serializedObject.Update();
 
