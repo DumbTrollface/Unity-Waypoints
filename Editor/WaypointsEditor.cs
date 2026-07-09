@@ -73,15 +73,30 @@ namespace DumbTrollface.Waypoints
             // Iterate over all waypoints
             for (int i = 0; i < count; i++)
             {
-                if (_showOnlySelected && i != selected) continue;
-
                 // Read the property and convert the position from local to world space
                 SerializedProperty pointProp = _waypointsProp.GetArrayElementAtIndex(i);
                 Vector3 worldPos = _wp.transform.TransformPoint(pointProp.vector3Value);
 
+                float handleSize = HandleUtility.GetHandleSize(worldPos);
+
                 // Create a label to make it easier to see which point is which
-                float offset = HandleUtility.GetHandleSize(worldPos) * 0.2f;
+                float offset = handleSize * 0.2f;
                 Handles.Label(worldPos + Vector3.up * offset + Vector3.right * offset, $"P{i}");
+
+                // Create a button handle to change the selected point in the scene view
+                if (Handles.Button(
+                    worldPos,
+                    Quaternion.identity,
+                    handleSize * 0.1f,
+                    handleSize * 0.2f,
+                    Handles.SphereHandleCap))
+                {
+                    _waypointList.Select(i);
+                    Repaint();
+                    SceneView.RepaintAll();
+                }
+
+                if (_showOnlySelected && i != selected) continue;
 
                 EditorGUI.BeginChangeCheck();
                 // Create a handle that can move an individual waypoint in the scene view
