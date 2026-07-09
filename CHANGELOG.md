@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.0.0] - 2026-07-09
+
+### Added
+- better travel:
+    - a new travel mode for NavMeshAgents
+    - the old travel mode is now referred to as the "simple" travel mode
+    - the simple travel mode now rotates the traveler towards the current target point
+- improved waypoint editor:
+    - added button handles to change the selected waypoint from within the scene view
+
+### Changes
+- renamed member variables with a prefix to distinguish them from parameters and local variables
+- waypoints converted from List to Array since they are not meant to be modified at runtime
+- improved waypoint labels for better legibility
+
 ## [1.2.0] - 2026-07-04
 
 ### Added
