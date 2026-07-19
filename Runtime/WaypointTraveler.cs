@@ -11,15 +11,27 @@ namespace DumbTrollface.Waypoints
             NavMeshAgent
         }
 
+        public enum EndMode
+        {
+            Stop,
+            Loop,
+            PingPong
+        }
+
+        public enum TravelDirection
+        {
+            Forward = 1,
+            Backward = -1
+        }
+
         [Header("Path")]
 
         [SerializeField]
         private Waypoints _waypoints;
 
         [SerializeField]
-        [Tooltip("Should the traveler consider the path as a loop even if the path is not closed?\n" +
-            "If the path is declared as closed, this option has no effect.")]
-        private bool _loop = true;
+        [Tooltip("What should the traveler do when it reached the end.")]
+        private EndMode _endMode = EndMode.Stop;
 
         [SerializeField]
         [Tooltip("This field shows the current waypoint index for debugging. It can also be used to set the starting target waypoint.")]
@@ -49,6 +61,10 @@ namespace DumbTrollface.Waypoints
         [SerializeField]
         [Tooltip("Threshold for determining when to start walking when turning")]
         private float _facingThresholdDegrees = 3.0f;
+
+        [SerializeField]
+        [Tooltip("The initial travel direction over the waypoints. Also shows the current direction during play mode.")]
+        private TravelDirection _travelDirection = TravelDirection.Forward;
 
         void Update()
         {
@@ -124,29 +140,33 @@ namespace DumbTrollface.Waypoints
             if (_waypoints == null || _waypoints.Count == 0)
                 return;
 
-            int nextIndex = _currentWaypointIndex + 1;
+            int nextIndex = _currentWaypointIndex + (int)_travelDirection;
 
-            if (nextIndex >= _waypoints.Count)
+            if (nextIndex >= _waypoints.Count || nextIndex < 0)
             {
-                if (_loop || _waypoints.Closed)
+                switch (_endMode)
                 {
-                    nextIndex = 0;
-                }
-                else
-                {
-                    nextIndex = _waypoints.Count - 1;
+                    case EndMode.Stop:
+                        if (_travelMode == TravelMode.NavMeshAgent)
+                        {
+                            _agent.isStopped = true;
+                        }
 
-                    if (_travelMode == TravelMode.NavMeshAgent)
-                    {
-                        _agent.isStopped = true;
-                    }
-
-                    enabled = false;
-                    return;
+                        enabled = false;
+                        break;
+                    case EndMode.Loop:
+                        _currentWaypointIndex = (nextIndex + _waypoints.Count) % _waypoints.Count;
+                        break;
+                    case EndMode.PingPong:
+                        _travelDirection = (TravelDirection)(-(int)_travelDirection); // TODO is there a better way to do this?
+                        _currentWaypointIndex += (int)_travelDirection;
+                        break;
                 }
             }
-
-            _currentWaypointIndex = nextIndex;
+            else
+            {
+                _currentWaypointIndex = nextIndex;
+            }
 
             if (_travelMode == TravelMode.NavMeshAgent)
             {
